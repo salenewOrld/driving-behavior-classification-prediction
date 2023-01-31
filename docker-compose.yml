@@ -1,0 +1,86 @@
+version: '3.9'
+services:
+  notebook:
+    container_name: jupyterlab
+    hostname: jupyter
+    build:
+      context: ./dockers/jupyterlab
+    ports:
+      #Jupyter Lab
+      - "8888:8888"
+      #Dtale
+      - "8181:8181"
+    volumes:
+      - .:/usr/src
+    working_dir: /usr/src
+    tty: true
+
+  # fastapi:
+  #   container_name: fastapi
+  #   hostname: fastapi
+  #   build:
+  #     context: ./dockers/fastapi
+  #   ports:
+  #     - "8686:8686"
+  #   volumes:
+  #     - .:/usr/src
+  #   working_dir: /usr/src
+  #   tty: true
+
+  feast:
+    container_name: feast
+    hostname: feast
+    build:
+      context: ./dockers/feast
+    ports:
+      - "9696:9696"
+    volumes:
+      - .:/usr/src
+    working_dir: /usr/src
+    tty: true
+
+  mlflow:
+    container_name: mlflow
+    hostname: mlflow
+    build:
+      context: ./dockers/mlflow
+    ports:
+      - '5959:5959'
+    volumes:
+      - .:/usr/src
+    working_dir: /usr/src
+    tty: true
+
+  mongodb:
+    container_name: mongodb
+    hostname: mongodb
+    build:
+      context: ./dockers/mongodb
+    ports:
+      - '8609:8609'
+    volumes:
+      - .:/usr/src
+    working_dir: /usr/src
+    tty: true
+
+  mysql:
+    container_name: mysql
+    hostname: mysql
+    build:
+      context: ./dockers/mysql
+    volumes:
+      - .:/usr/src
+    working_dir: /usr/src
+    tty: true
+
+  # airflow:
+  #   container_name: airflow
+  #   hostname: airflow
+  #   build:
+  #     context: ./dockers/airflow
+  #   #ports:
+  #     #- '8609:8609'
+  #   volumes:
+  #     - .:/usr/src
+  #   working_dir: /usr/src
+  #   tty: true
