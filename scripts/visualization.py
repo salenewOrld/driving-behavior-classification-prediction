@@ -5,29 +5,28 @@ import matplotlib.pyplot as plt
 import sys
 import os
 from config_reader import ConfigReader
-
+import matplotlib.pyplot as plt
+import scipy
+from read_data import ReadData
+import random
 ''' More Graphes will be coming soon'''
 
-class ReadData:
-    def __init__(self, extension='csv', interpreter='Python'):
-        self.extension = extension
-        self.interpreter = interpreter
-    def read_data(self, path):
-        if self.interpreter == 'PySpark' and self.extension == 'csv':
-            return spark.read.option('inferSchema', 'true').option('header', 'true').csv(path)
-        elif self.interpreter == 'PySpark' and self.extension == 'parquet':
-            return spark.read.option('inferSchema', 'true').option('header', 'true').parquet(path)
-        elif self.interpreter == 'Python' and self.extension == 'csv':
-            return pd.read_csv(path)
-        elif self.interpreter == 'Python' and self.extension == 'parquet':
-            return pd.read_parquet(path)
-        return True
-    
 class Visualization(ReadData):
-    def __init__(self, path, extension='csv', interpreter='Python', config=None):
+    def __init__(self, 
+                 path, 
+                 extension='csv', 
+                 interpreter='Python', 
+                 config=
+        {
+            'output' : '/usr/src/figs/',
+            'save' : True
+        }, 
+                 save=False, 
+                 output_path='/usr/src/figs/'):
         self.interpreter = interpreter     
         self.extension = extension
         self.config = config
+        self.output_path = output_path
         self.install_requirements()
         super().__init__(self.extension, self.interpreter)
         self.df = self.read_data(path)
@@ -46,7 +45,7 @@ class Visualization(ReadData):
         if self.interpreter == 'Python':
             graph = sns.histplot(data=self.df, **param)
         if self.config != None and self.config['save'] == True:
-            self.save(graph, self.config['output'])
+            self.save(graph, self.config['output'], 'hist')
         return graph
     def distribution(self, param=None, graph_type='violin'):
         if self.interpreter == 'Python' and graph_type == 'dist':
@@ -54,13 +53,13 @@ class Visualization(ReadData):
         elif self.interpreter == 'Python' and graph_type == 'violin':
             graph = sns.violinplot(data=self.df, **param)
         if self.config != None and self.config['save'] == True:
-            self.save(graph, self.config['output'])
+            self.save(graph, self.config['output'], 'distribution')
         return graph
     def joint(self, param=None):
         if self.interpreter == 'Python':
             graph = sns.jointplot(data=self.df, **param)
         if self.config != None and self.config['save'] == True:
-            self.save(graph, self.config['output'])
+            self.save(graph, self.config['output'], 'joint')
         return graph
     def pairplot(self, param=None):
         if param == None and self.interpreter == 'Python':
@@ -68,10 +67,16 @@ class Visualization(ReadData):
         elif param != None and self.interpreter == 'Python': 
             graph = sns.pairplot(self.df, **param)
         if self.config != None and self.config['save'] == True:
-            self.save(graph, self.config['output'])
+            self.save(graph, self.config['output'], 'pairplot')
         return graph
-    def save(self, plot, output):
-        plt.savefig(f'{output}/output.png')
+    def probplot(self, param=None):
+        if self.interpreter == 'Python':
+            graph = scipy.stats.probplot(plot=plt, **param)
+        if self.config != None and self.config['save'] == True:
+            self.save(graph, self.config['output'], 'probplot')
+        return graph
+    def save(self, plot, output, plot_name):
+        plt.savefig(f'{output}/output_{plot_name}_{random.randint(0, 999999)}.png')
 
 def execute(config : dict):
     vis = Visualization(config['input_path'], config['extension'], config['interpreter'], config)

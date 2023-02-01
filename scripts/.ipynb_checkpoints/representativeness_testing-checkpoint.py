@@ -1,6 +1,7 @@
 import random
 import numpy as np
 from sklearn import linear_model, ensemble
+from read_data import ReadData
 class RepresentativenessTesting:
     def __init__(self, method):
         self.method = method
@@ -50,3 +51,40 @@ class PredictiveModeling:
             testing_result = self.evaluate(model)
             models_result[model] = testing_result
         return models_result
+    
+class DescriptiveSummaryStatsAnalysis(ReadData):
+    def __init__(self, path, extension='csv', interpreter='Python'):
+        self.path = path
+        self.extension = extension
+        self.interpreter = interpreter
+        super().__init__(self.extension, self.interpreter)
+        self.df = self.read_data(path)
+    def descriptive(self, param=None):
+        if param == None:
+            return self.df.describe(percentiles=[.25, .5, .75], include='all', datetime_is_numeric=False)
+        else :
+            return self.df.describe(**param)
+    def summary(self, param):
+        df = self.df
+        non_null = df[param['column']].count()
+        print(f"| Summary statistical of {param['column']} |".center(50, '*'))
+        print(f"| Mean of {param['column']} |".center(50, '-'), ':', df[param['column']].mean())
+        print(f"| Median of {param['column']} |".center(50, '-'), ':', df[param['column']].median())
+        print(f"| Standard deviation of {param['column']} |".center(50, '-'), ':', df[param['column']].std())
+        print(f"| Variance of {param['column']} |".center(50, '-'), ':', df[param['column']].var())
+        print(f"| Minimum value of {param['column']} |".center(50, '-'), ':', df[param['column']].min())
+        print(f"| Maximum value of {param['column']} |".center(50, '-'), ':', df[param['column']].max())
+        print(f"| Count of non-null values in {param['column']} |".center(50, '-'), ':', non_null)
+        print(f"| Count of null values in {param['column']} |".center(50, '-'), ':', df[param['column']].shape[0] - non_null)
+        print(f"| Sum of {param['column']} |".center(50, '-'), ':', df[param['column']].sum())
+        print('\n')
+    def execute(self):
+        print(self.descriptive())
+        for j in self.df.columns:
+            if str(self.df[j].dtype) == 'object':
+                pass
+            else : 
+                param = {'column' : j}
+                self.summary(param)
+        
+    
