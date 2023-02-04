@@ -2,6 +2,11 @@ import random
 import numpy as np
 from sklearn import linear_model, ensemble
 from read_data import ReadData
+import numpy as np
+import pandas as pd
+from sklearn.model_selection import StratifiedShuffleSplit
+from sklearn.ensemble import RandomForestClassifier
+
 class RepresentativenessTesting:
     def __init__(self, method):
         self.method = method
@@ -16,24 +21,19 @@ class RepresentativenessTesting:
 class MonteCarloSimulation:
     def __init__(self):
         pass
-    def monte_carlo_simulation(data, n_simulations):
-        # Define number of simulations
-        n_simulations = n_simulations
 
-        # Define the number of columns in the dataset
-        n_cols = data.shape[1]
+    def monte_carlo_simulation(self, data, model, features, target, iterations, test):
+        results = []
+        sss = StratifiedShuffleSplit(n_splits=iterations, test_size=0.2)
+        for train_index, test_index in sss.split(data[features], data[target]):
+            X_train, y_train = data.loc[train_index, features], data.loc[train_index, target]
+            model.fit(X_train, y_train)
+            results.append(model.predict(test[features]))
+            
+        return np.array(results)
 
-        # Define an empty array to store the simulation results
-        results = np.zeros((n_simulations, n_cols))
 
-        # Loop over the number of simulations
-        for i in range(n_simulations):
-            # Draw random samples from the data for each column
-            for j in range(n_cols):
-                results[i, j] = np.random.choice(data[:, j])
 
-        # Return the results
-        return results
     
 class PredictiveModeling:
     def __init__(self, array_results):
