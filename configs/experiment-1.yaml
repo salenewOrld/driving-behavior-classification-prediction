@@ -1,0 +1,7 @@
+x_train_path: "/Users/salene/Documents/GitHub/driving-behavior-classification-prediction/etled-data/x_train.csv"
+y_train_path: "/Users/salene/Documents/GitHub/driving-behavior-classification-prediction/etled-data/y_train.csv"
+x_test_path: "/Users/salene/Documents/GitHub/driving-behavior-classification-prediction/etled-data/x_test.csv"
+y_test_path: "/Users/salene/Documents/GitHub/driving-behavior-classification-prediction/etled-data/y_test.csv"
+x_validate_path: "/Users/salene/Documents/GitHub/driving-behavior-classification-prediction/etled-data/x_unseen.csv"
+y_validate_path: "/Users/salene/Documents/GitHub/driving-behavior-classification-prediction/etled-data/y_unseen.csv"
+problem_type: "classification"

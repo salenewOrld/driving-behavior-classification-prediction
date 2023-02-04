@@ -20,3 +20,7 @@ sphinx_rtd_theme
 dtale
 wandb
 jupyterlab
+#catboost
+xgboost
+lightgbm
+
