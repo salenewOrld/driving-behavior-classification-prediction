@@ -1,10 +1,7 @@
-FROM continuumio/miniconda3
+FROM python:latest
 RUN apt-get update
 RUN apt install -y make
-RUN conda install -c conda-forge mlflow 
-
-EXPOSE 5959
-
-#ENTRYPOINT [ "mlflow", 'server', '"--ip=0.0.0.0', '"--port=5959"' ]
-
-#RUN mlflow server -h 0.0.0.0 -p 5959
+RUN pip3 install mlflow
+RUN pip3 install mlflow[pipeline]
+RUN pip3 install mlflow[extras]
+EXPOSE 5959 

@@ -11,8 +11,8 @@ evidently
 
 # model tracking
 mlflow
-#mlflow[pipelines]
-#mlflow[extras]
+mlflow[pipelines]
+mlflow[extras]
 
 # modeling
 xgboost
@@ -33,9 +33,11 @@ fastapi
 #mongodb
 
 # fs
-feast
+#feast
 #dtale
 opendatasets
-sweetviz
+#azure
+#sweetviz
 #Autoviz
 #pandas-profiling
+#opendatasets

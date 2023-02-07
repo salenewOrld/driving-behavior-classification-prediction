@@ -18,11 +18,11 @@ class Visualization(ReadData):
                  interpreter='Python', 
                  config=
         {
-            'output' : '/usr/src/figs/',
+            'output' : '/Users/salene/Documents/GitHub/driving-behavior-classification-prediction/figs',
             'save' : True
         }, 
                  save=False, 
-                 output_path='/usr/src/figs/'):
+                 output_path='/Users/salene/Documents/GitHub/driving-behavior-classification-prediction/figs/'):
         self.interpreter = interpreter     
         self.extension = extension
         self.config = config
@@ -40,7 +40,6 @@ class Visualization(ReadData):
             sc.install_pypi_package('seaborn')
             sc.install_pypi_package('matplotlib')
             sc.install_pypi_package('numpy')
-        
     def histogram(self, param=None):
         if self.interpreter == 'Python':
             graph = sns.histplot(data=self.df, **param)
@@ -75,6 +74,11 @@ class Visualization(ReadData):
         if self.config != None and self.config['save'] == True:
             self.save(graph, self.config['output'], 'probplot')
         return graph
+    def boxplot(self, param=None):
+        if self.interpreter == 'Python':
+            graph = sns.boxplot(**param)
+        if self.config != None and self.config['save'] == True:
+            self.save(graph, self.config['output'], 'probplot')
     def save(self, plot, output, plot_name):
         plt.savefig(f'{output}/output_{plot_name}_{random.randint(0, 999999)}.png')
 
